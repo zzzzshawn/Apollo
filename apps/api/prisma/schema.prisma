@@ -12,3 +12,10 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model Image {
+  id        String   @id @default(uuid())  // Primary key
+  prompt    String   // Non-null text field for the prompt
+  embedding Bytes    // Non-null blob field for the embedding (used for storing embeddings)
+  createdAt DateTime @default(now()) // Default to the current timestamp
+}
