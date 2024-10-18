@@ -1,10 +1,11 @@
 import { Hono } from 'hono'
+import { dbClient } from '../prisma/db'
 
 const app = new Hono()
 
 app.get('/', (c) => {
-  console.log(c.env)
-  return c.text('Hello Hono!')
+  const a = JSON.stringify(c.env)
+  return c.text(`hello ${a}`)
 })
 
 export default app

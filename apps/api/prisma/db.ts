@@ -13,5 +13,7 @@ export const dbClient = (env: Env) => {
     datasourceUrl: env.DATABASE_URL,
   }).$extends(withAccelerate())
 
+  console.log('DB client generated')
+
   return prisma;
 };
