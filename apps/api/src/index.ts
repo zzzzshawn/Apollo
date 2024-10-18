@@ -4,8 +4,7 @@ import { generate } from "../routes/generate"
 const app = new Hono()
 
 app.get('/', (c) => {
-  const a = JSON.stringify(c.env)
-  return c.text(`hello ${a}`)
+  return c.text(`hello`)
 })
 
 app.route("/generate", generate)

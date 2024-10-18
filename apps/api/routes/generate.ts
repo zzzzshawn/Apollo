@@ -11,6 +11,7 @@ import { HTTPException } from "hono/http-exception";
 import { dbClient } from "../prisma/db";
 import { getEmbeddings } from "../lib/embedding";
 
+
 const app = new Hono<{ Bindings: Env }>();
 
 const generateImageSchema = z.object({
@@ -59,43 +60,43 @@ app.post("/", zValidator("json", generateImageSchema), async (c) => {
       },
     });
 
-    if(!uploadResponse.ok){
-        throw new HTTPException(500, {
-            message: "Failed to upload image. Please Try again."
-        })
+    if (!uploadResponse.ok) {
+      throw new HTTPException(500, {
+        message: "Failed to upload image. Please Try again.",
+      });
     }
 
     // now connect to db and save the image there
     const db = dbClient(c.env);
 
+
     // create embedding of the image
     const embedding = await getEmbeddings({
-        env: c.env,
-        text: prompt
-    })
+      env: c.env,
+      text: prompt,
+    });
     // create buffer of embeddings
-    const embeddingBuffer = Buffer.from(new Float32Array(embedding).buffer)
-    
+    const embeddingBuffer = Buffer.from(new Float32Array(embedding).buffer);
+
     await db.image.create({
-        data: {
-            id: imageId,
-            prompt: prompt,
-            embedding: embeddingBuffer
-        }
-    })
+      data: {
+        id: imageId,
+        prompt: prompt,
+        embedding: embeddingBuffer,
+      },
+    });
 
     const imageBuffer = await blobImage.arrayBuffer();
 
     return c.body(imageBuffer, 200, {
-        "Content-Type": "image/jpeg",
-        "Content-Disposition": `inline; filename="${prompt}.jpeg`
-    })
+      "Content-Type": "image/jpeg",
+      "Content-Disposition": `inline; filename="${prompt}.jpeg`,
+    });
 
-
-
+    // return c.text("done")
   } catch (error) {
     console.log(error);
   }
 });
 
-export { app as generate }
+export { app as generate };

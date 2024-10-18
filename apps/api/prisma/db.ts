@@ -1,4 +1,4 @@
-import { PrismaClient } from "@prisma/client/extension";
+import { PrismaClient } from "@prisma/client/edge";
 import { Env } from "../src/types";
 import { withAccelerate } from "@prisma/extension-accelerate";
 
@@ -10,7 +10,7 @@ export const dbClient = (env: Env) => {
   }
 
   const prisma = new PrismaClient({
-    datasourceUrl: env.DATABASE_URL,
+    datasourceUrl: DATABASE_URL,
   }).$extends(withAccelerate())
 
   console.log('DB client generated')
