@@ -13,4 +13,5 @@ export const dbClient = (env: Env) => {
     datasourceUrl: env.DATABASE_URL,
   }).$extends(withAccelerate())
 
+  return prisma;
 };
