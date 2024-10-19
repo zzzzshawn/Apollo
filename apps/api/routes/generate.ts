@@ -26,7 +26,7 @@ app.post("/", zValidator("json", generateImageSchema), async (c) => {
     const body = c.req.valid("json");
     const prompt = body.prompt;
 
-    // ? todo: check if text is nfsw
+    // ? check for nsfw
 
     // initialize HF
     const model = new HfInference(c.env.HUGGINGFACE_KEY);
@@ -37,7 +37,7 @@ app.post("/", zValidator("json", generateImageSchema), async (c) => {
       inputs: prompt,
     })) as Blob;
 
-    //create id for image to save to bucket
+    //create id for image to save to buckettodo: check if text is nfsw
     const imageId = generateUniqueId();
     // initialize a S#Client
     const r2 = createS3Client(c.env);
